@@ -1,0 +1,47 @@
+#!/bin/bash --posix
+
+KEYWORD=$1
+
+user_guid(){
+	echo ""
+	echo -en "Usage: search -d [dir path] -k [Keyword,...] -o [Output,...]\n"
+	echo ""
+	echo -en "  -k, \tKeywords to search.\n"
+	echo -en "  -o, \tRedirect output dedeination.\n"
+	echo -en "  -v, \tsearch version.\n"
+	echo -en "  -h, \tdisplay this help message.\n"
+	echo -en "\t\t(default search path is current directory.)\n"
+	echo -en "\nExample:\n"
+	echo -en "  search -k PS1,alias\n"
+	echo -en "  search -k PS1,alias -o 2.1>/dev/pts/5\n\n"	
+	echo -en "\"PS1\" & \"alias\" as search keywords\n"
+	echo -en "  2.1>/dev/pts/5 ,the '2' in the integer part of '2.1'\nrefers the to second keyword while the '1' in the decimal part of '2.1'\nrefers the to File descriptor 1.the '>/dev/pts/5' the means is output the result\n"
+	echo -en "\n\n"
+	echo -en "notice:\n"
+	echo -en "if you want to output the result separately to different device.\n\n"	
+	echo -en "File descriptor 1 is the standard output (stdout).\n"
+	echo -en "File descriptor 2 is the standard error (stderr).\n"
+	echo -en "\n'/dev/pts/x' : redirect output to the terminal(/dev/pts/x).\n"
+	echo -en "or you can redirect output to file,like '>filename'.\n"
+	echo -en "\n\tif you dont't know what this meads.please ignore it.\n\n"
+}
+
+search(){
+	find ./ -name "*"|while read fn;do
+		if [ -f $fn ];then
+			echo "File Name:${fn}" >/dev/pts/0 2>&1;
+			if [ -n "$(cat ${fn} |grep "Raspberry")" ];then
+				echo -en "\e[5;031mFile Name: ${fn}\e[0m\n" >/dev/pts/1
+				echo -en "Matching Raspberry:  \t" 1>/dev/pts/1
+				cat -n ${fn} |grep "Raspberry" 1>/dev/pts/1
+			fi
+		fi
+	done
+}
+
+
+main(){
+	user_guid
+}
+
+main

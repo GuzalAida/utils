@@ -1,0 +1,5 @@
+#!/bin/bash --posix
+
+
+export PATH=${PATH}:$(pwd)/bin
+echo -en "[ OK ] Extended command\n"
